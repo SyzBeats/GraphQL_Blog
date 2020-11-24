@@ -16,14 +16,14 @@ const Query = {
 		};
 	},
 	users(parent, args, { db }, info) {
-		if (!args.query) return users;
+		if (!args.query) return db.users;
 		const searchString = args.query.toLowerCase();
 		return db.users.filter(
 			val => val.name.toLowerCase().indexOf(searchString) !== -1
 		);
 	},
 	posts(parent, args, { db }, info) {
-		if (!args.query) return posts;
+		if (!args.query) return db.posts;
 		const searchString = args.query.toLowerCase();
 		return db.posts.filter(post => {
 			const titleMatch =

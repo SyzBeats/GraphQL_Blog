@@ -1,3 +1,4 @@
+import { ApolloError } from "apollo-server";
 import { v4 as uuidv4 } from "uuid";
 
 const Mutation = {
@@ -16,6 +17,47 @@ const Mutation = {
 
 			db.users.push(newUser);
 			return newUser;
+		} catch (error) {
+			console.log(error);
+			return error;
+		}
+	},
+
+	updateUser(parent, args, { db }, info) {
+		try {
+			const { id, data } = args;
+			const user = db.users.find(user => user.id === id);
+
+			if (!user) {
+				throw new ApolloError("This user does not exist");
+			}
+
+			if (typeof data.email === "string") {
+				const emailTaken = db.users.some(user => user.email === data.email);
+
+				if (emailTaken) {
+					throw new Error("This email is taken");
+				}
+
+				user.email = data.email;
+			}
+
+			if (typeof data.name === "string") {
+				user.name = data.name;
+			}
+
+			if (typeof data.age !== "undefined") {
+				user.age = data.age;
+			}
+
+			// update in DB
+			db.users.map(currentUser => {
+				if (currentUser.id === id) {
+					currentUser = user;
+				}
+			});
+
+			return user;
 		} catch (error) {
 			console.log(error);
 			return error;
@@ -76,6 +118,35 @@ const Mutation = {
 		}
 	},
 
+	updatePost(parent, args, { db }, info) {
+		try {
+			const { data, id } = args;
+			const post = db.posts.find(post => post.id === id);
+
+			if (!post) {
+				throw new ApolloError("this post does not exist");
+			}
+
+			if (typeof data.title === "string") {
+				post.title = data.title;
+			}
+
+			if (typeof data.body === "string") {
+				post.body = data.body;
+			}
+
+			db.posts.map(currentPost => {
+				if (currentPost.id === id) {
+					currentPost = post;
+				}
+			});
+
+			return post;
+		} catch (error) {
+			console.log(error);
+			return error;
+		}
+	},
 	deletePost(parent, args, { db }, info) {
 		try {
 			const postIndex = db.posts.findIndex(post => post.id === args.id);
@@ -119,6 +190,32 @@ const Mutation = {
 			db.comments.push(newComment);
 
 			return newComment;
+		} catch (error) {
+			console.log(error);
+			return error;
+		}
+	},
+
+	updateComment(parent, args, { db }, info) {
+		try {
+			const { id, data } = args;
+			const comment = db.comments.find(comment => comment.id === id);
+
+			if (!comment) {
+				throw new ApolloError("This user does not exist");
+			}
+
+			if (typeof data.text === "string") {
+				comment.text = data.text;
+			}
+
+			db.comments.map(currentComment => {
+				if (currentCcomment.id === id) {
+					currentComment = comment;
+				}
+			});
+
+			return comment;
 		} catch (error) {
 			console.log(error);
 			return error;
