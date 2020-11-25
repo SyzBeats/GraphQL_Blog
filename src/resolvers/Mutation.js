@@ -50,13 +50,6 @@ const Mutation = {
 				user.age = data.age;
 			}
 
-			// update in DB
-			db.users.map(currentUser => {
-				if (currentUser.id === id) {
-					currentUser = user;
-				}
-			});
-
 			return user;
 		} catch (error) {
 			console.log(error);
@@ -135,12 +128,6 @@ const Mutation = {
 				post.body = data.body;
 			}
 
-			db.posts.map(currentPost => {
-				if (currentPost.id === id) {
-					currentPost = post;
-				}
-			});
-
 			return post;
 		} catch (error) {
 			console.log(error);
@@ -208,12 +195,6 @@ const Mutation = {
 			if (typeof data.text === "string") {
 				comment.text = data.text;
 			}
-
-			db.comments.map(currentComment => {
-				if (currentCcomment.id === id) {
-					currentComment = comment;
-				}
-			});
 
 			return comment;
 		} catch (error) {

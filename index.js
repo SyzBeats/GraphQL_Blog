@@ -1,11 +1,20 @@
-import { gql, ApolloServer, ApolloError } from "apollo-server";
+import { gql, ApolloServer, ApolloError, PubSub } from "apollo-server";
 import fs from "fs";
 import db from "./src/db";
-import { Query, Post, User, Comment, Mutation } from "./src/resolvers";
+import {
+	Query,
+	Post,
+	User,
+	Comment,
+	Mutation,
+	Subscription,
+} from "./src/resolvers";
 
+const pubSub = new PubSub();
 const resolvers = {
 	Query,
 	Mutation,
+	Subscription,
 	Post,
 	User,
 	Comment,
@@ -19,6 +28,7 @@ const server = new ApolloServer({
 	resolvers,
 	context: {
 		db,
+		pubSub,
 	},
 });
 
