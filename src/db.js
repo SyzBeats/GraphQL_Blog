@@ -38,7 +38,7 @@ const posts = [
 		id: "3",
 		title: "Node.js is awesome",
 		body: "<h3>API development</h3>",
-		published: true,
+		published: false,
 		author: "3",
 	},
 ];

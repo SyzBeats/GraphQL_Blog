@@ -91,7 +91,7 @@ const Mutation = {
 		}
 	},
 
-	createPost(parent, args, { db }, info) {
+	createPost(parent, args, { db, pubSub }, info) {
 		try {
 			const userExists = db.users.some(user => user.id === args.data.author);
 			if (!userExists) {
@@ -104,6 +104,12 @@ const Mutation = {
 			};
 
 			db.posts.push(post);
+
+			// subscription
+			if (args.data.published) {
+				pubSub.publish("post", { post });
+			}
+
 			return post;
 		} catch (error) {
 			console.log(error);
@@ -155,7 +161,7 @@ const Mutation = {
 		}
 	},
 
-	createComment(parent, args, { db }, info) {
+	createComment(parent, args, { db, pubSub }, info) {
 		try {
 			const { post, author, text } = args.data;
 
@@ -175,6 +181,9 @@ const Mutation = {
 			};
 
 			db.comments.push(newComment);
+
+			// to enable socket communication once a new comment is created on a post
+			pubSub.publish(`comment ${args.data.post}`, { comment: newComment });
 
 			return newComment;
 		} catch (error) {
