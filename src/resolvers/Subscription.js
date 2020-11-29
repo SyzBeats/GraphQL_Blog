@@ -26,7 +26,7 @@ const Subscription = {
 					throw new Error(`Post with id ${postId} does not exist`);
 				}
 
-				// channel ID
+				// sets the channel ID
 				return pubSub.asyncIterator(`comment ${postId}`);
 			} catch (error) {
 				console.log(error);

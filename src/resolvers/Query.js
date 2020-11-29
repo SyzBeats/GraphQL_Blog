@@ -1,4 +1,10 @@
 const Query = {
+	/**
+	 * @param {object} parent
+	 * @param {args} args passed arguments
+	 * @param {object} context
+	 * @param {object} info request information pipe
+	 */
 	me(parent, args, { db }, info) {
 		return {
 			id: "u123456",
@@ -7,6 +13,12 @@ const Query = {
 			age: 27,
 		};
 	},
+	/**
+	 * @param {object} parent
+	 * @param {args} args passed arguments
+	 * @param {object} context
+	 * @param {object} info request information pipe
+	 */
 	post(parent, args, { db }, info) {
 		return {
 			id: "p123456",
@@ -15,6 +27,12 @@ const Query = {
 			published: true,
 		};
 	},
+	/**
+	 * @param {object} parent
+	 * @param {args} args passed arguments
+	 * @param {object} context
+	 * @param {object} info request information pipe
+	 */
 	users(parent, args, { db }, info) {
 		if (!args.query) return db.users;
 		const searchString = args.query.toLowerCase();
@@ -22,6 +40,12 @@ const Query = {
 			val => val.name.toLowerCase().indexOf(searchString) !== -1
 		);
 	},
+	/**
+	 * @param {object} parent
+	 * @param {args} args passed arguments
+	 * @param {object} context
+	 * @param {object} info request information pipe
+	 */
 	posts(parent, args, { db }, info) {
 		if (!args.query) return db.posts;
 		const searchString = args.query.toLowerCase();
